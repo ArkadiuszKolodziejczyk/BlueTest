@@ -1,19 +1,23 @@
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import pl.bl.document.*;
 import pl.bl.organization.User;
 
 public class ProgrammerService {
-
+	private static final Pattern PATTERN = Pattern.compile(".*[•π∆Ê Í£≥—Ò”ÛåúèüØø].*");
+	
 	public void execute(DocumentDao documentDao) {
 		List<Document> documents = documentDao.getAllDocumentsInDatabase();
-
 		List<ApplicationForHolidays> applicationsForHolidays = filterTypeOfDocument(documents, ApplicationForHolidays.class);
 		List<Questionnaire> questionnaires = filterTypeOfDocument(documents, Questionnaire.class);
-		
+		execute(applicationsForHolidays, questionnaires);
+	}
+	
+	public void execute(List<ApplicationForHolidays> applicationsForHolidays, List<Questionnaire> questionnaires)  {
 		System.out.println("årednia liczba moøliwych odpowiedzi na pytania ze wszystkich kwestionariuszy wynosi: " 
 							+ getAverageOfPossibleAnswers(questionnaires));
 		
@@ -83,12 +87,10 @@ public class ProgrammerService {
 	}
 	
 	private void checkPolishCharacters(List<User> userList) {
-		for (User user : userList) {
-			String login = user.getLogin();
-			if (login.matches(".*[•π∆Ê Í£≥—Ò”ÛåúèüØø].*")) {
-				System.out.println("Login " + login + " zawiera polskie znaki");
-			}
-		}
+		userList.stream()
+			.map(User::getLogin)
+			.filter(login -> PATTERN.matcher(login).matches())
+			.forEach(login -> System.out.println("Login " + login + " zawiera polskie znaki"));
 	}
 	
 	private void checkDates(List<ApplicationForHolidays> applicationsForHolidays) {	
