@@ -1,0 +1,14 @@
+Ankieta komputerowa
+
+Pytanie: Które procesory twoim zdaniem maj¹ najlepsz¹ relacjê jakoœci do ceny?
+    1. AMD
+    2. Intel
+    3. IBM Power
+
+Pytanie: Jaka jest minimalna iloœæ ramu która wymagana jest aby wygodnie programowaæ w Javie?
+    1. 2GB
+    2. 4GB
+    3. 8GB
+    4. 16GB
+    5. 32GB
+    6. 64GB
